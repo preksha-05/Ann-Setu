@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ann Setu | Food Bridge</title>
+    <meta
+      name="description"
+      content="Ann Setu is a food bridge app that connects event caterers and restaurants with NGOs and volunteers so surplus food reaches the needy instead of being wasted."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Poltawski+Nowy:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --green: #006623;
+        --green-bright: #01c544;
+        --green-40: #99e8b4;
+        --mint: #e1f4e8;
+        --mint-2: #c5ead2;
+        --ink: #0f3a1f;
+        --text: #1d3a28;
+        --muted: #5c6f63;
+        --grey: #adadaf;
+        --canvas: #ffffff;
+        --radius: 28px;
+        --pad: clamp(20px, 6vw, 96px);
+        --max: 1200px;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        background: var(--canvas);
+        color: var(--text);
+        font-family: Poppins, system-ui, -apple-system, "Segoe UI", sans-serif;
+        font-size: 18px;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      img { display: block; max-width: 100%; }
+      a { color: inherit; }
+      h1, h2, h3, p, ul { margin: 0; }
+
+      h2 {
+        color: var(--ink);
+        font-size: clamp(32px, 4.4vw, 54px);
+        font-weight: 800;
+        line-height: 1.1;
+      }
+
+      h3 { color: var(--ink); font-size: 20px; font-weight: 600; line-height: 1.35; }
+
+      .wrap { position: relative; width: min(100%, var(--max)); margin: 0 auto; }
+      section { position: relative; padding: clamp(72px, 10vw, 128px) var(--pad); }
+
+      .eyebrow {
+        display: inline-block;
+        margin-bottom: 16px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--green);
+      }
+
+      .lead { margin-top: 20px; max-width: 700px; font-size: clamp(18px, 1.7vw, 21px); color: var(--muted); }
+
+      /* decorative rings, echoing the Figma slides */
+      .ring {
+        position: absolute;
+        border-radius: 50%;
+        border: clamp(50px, 8vw, 100px) solid var(--mint);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ---------- Header ---------- */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 14px var(--pad);
+        background: rgb(255 255 255 / 90%);
+        border-bottom: 1px solid var(--mint-2);
+        backdrop-filter: blur(14px);
+      }
+
+      header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+
+      .brand {
+        font-family: "Poltawski Nowy", Georgia, serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--green);
+        text-decoration: none;
+      }
+
+      nav { display: flex; gap: 4px; }
+
+      nav a {
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      nav a:hover { background: var(--mint); color: var(--green); }
+
+      /* ---------- Hero ---------- */
+      .hero { padding-top: clamp(56px, 8vw, 96px); overflow: hidden; }
+      .hero .ring.r1 { width: 640px; height: 640px; top: -260px; left: -260px; }
+      .hero .ring.r2 { width: 900px; height: 900px; bottom: -520px; right: -300px; border-color: var(--mint-2); }
+
+      .hero-grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+        gap: clamp(32px, 5vw, 72px);
+        align-items: center;
+      }
+
+      .hero h1 {
+        color: var(--ink);
+        font-size: clamp(56px, 8vw, 104px);
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.02em;
+      }
+
+      .hero .tagline {
+        display: block;
+        margin-top: 12px;
+        font-family: "Poltawski Nowy", Georgia, serif;
+        font-size: clamp(22px, 2.4vw, 30px);
+        color: var(--green);
+      }
+
+      .hero .lead { color: var(--text); }
+
+      .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+
+      .meta span {
+        padding: 8px 18px;
+        border-radius: 999px;
+        background: var(--mint);
+        color: var(--green);
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .hero-visual img {
+        width: 100%;
+        border-radius: var(--radius);
+        box-shadow: 0 30px 70px rgb(0 102 35 / 14%);
+      }
+
+      /* ---------- Problem ---------- */
+      .problem { background: var(--mint); }
+
+      .problem-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+        gap: clamp(32px, 5vw, 64px);
+        margin-top: 48px;
+        align-items: start;
+      }
+
+      .quote {
+        position: sticky;
+        top: 110px;
+        padding: clamp(28px, 4vw, 44px);
+        border-radius: var(--radius);
+        background: var(--green);
+        color: #fff;
+        font-size: clamp(18px, 1.8vw, 22px);
+        line-height: 1.55;
+      }
+
+      .quote::before {
+        content: "\201C";
+        display: block;
+        height: 48px;
+        font-family: "Poltawski Nowy", Georgia, serif;
+        font-size: 90px;
+        line-height: 1;
+        color: var(--green-40);
+      }
+
+      .stats { display: grid; gap: 16px; }
+
+      .stat {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 24px;
+        align-items: center;
+        padding: 26px 28px;
+        border-radius: 22px;
+        background: #fff;
+      }
+
+      .stat strong {
+        display: block;
+        color: var(--green);
+        font-size: clamp(36px, 4vw, 48px);
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      .stat small { display: block; margin-top: 6px; font-size: 13px; color: var(--muted); }
+      .stat p { font-size: 16px; }
+
+      .bar { height: 8px; margin-top: 12px; border-radius: 99px; background: var(--grey); overflow: hidden; }
+      .bar i { display: block; width: 30%; height: 100%; background: var(--green); }
+
+      .solution-box {
+        padding: 28px;
+        border-radius: 22px;
+        background: var(--green-40);
+      }
+
+      .solution-box h3 { font-size: 22px; font-weight: 800; }
+      .solution-box p { margin-top: 8px; font-size: 17px; color: var(--ink); }
+
+      /* ---------- Process ---------- */
+      .figure-card {
+        margin: 48px 0 0;
+        border-radius: var(--radius);
+        overflow: hidden;
+        border: 1px solid var(--mint-2);
+        cursor: zoom-in;
+      }
+
+      .figure-card img { width: 100%; }
+      .figure-note { margin-top: 14px; font-size: 14px; color: var(--muted); }
+
+      /* ---------- Personas ---------- */
+      .personas { background: var(--mint); }
+
+      .persona-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+        margin-top: 48px;
+      }
+
+      .persona {
+        padding: clamp(26px, 3.5vw, 40px);
+        border-radius: var(--radius);
+        background: #fff;
+      }
+
+      .persona-head { display: flex; align-items: center; gap: 16px; }
+
+      .avatar {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: var(--green);
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .persona-head h3 { font-size: 22px; font-weight: 800; }
+      .persona-head h3 span { font-size: 16px; font-weight: 600; }
+      .persona-head em { display: block; font-size: 15px; color: var(--muted); }
+
+      .tag {
+        display: inline-block;
+        margin: 28px 0 10px;
+        padding: 4px 16px;
+        border-radius: 10px;
+        background: var(--green-40);
+        color: var(--ink);
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .persona ul { padding-left: 20px; font-size: 16px; }
+      .persona li + li { margin-top: 6px; }
+
+      /* ---------- Features ---------- */
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 48px;
+      }
+
+      .feature {
+        padding: 30px;
+        border-radius: var(--radius);
+        background: var(--mint-2);
+      }
+
+      .feature .num {
+        display: inline-grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        margin-bottom: 18px;
+        border-radius: 50%;
+        background: var(--green);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .feature ul { margin-top: 14px; padding-left: 20px; font-size: 15.5px; color: var(--ink); }
+      .feature li + li { margin-top: 6px; }
+      .feature ul ul { margin-top: 6px; }
+
+      .feature.highlight { background: var(--green); }
+      .feature.highlight h3, .feature.highlight ul { color: #fff; }
+      .feature.highlight .num { background: #fff; color: var(--green); }
+
+      /* ---------- Style guide ---------- */
+      .style-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 48px;
+      }
+
+      .style-card { padding: 30px; border-radius: var(--radius); background: var(--mint); }
+      .swatches { display: flex; gap: 14px; margin-top: 20px; }
+      .swatch { text-align: center; font-size: 13px; font-weight: 500; }
+      .swatch i { display: block; width: 72px; height: 72px; margin-bottom: 8px; border-radius: 18px; }
+
+      .type-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 20px; }
+      .type-row small { color: var(--green); font-size: 14px; }
+      .type-row .poppins { font-size: 26px; font-weight: 700; color: var(--ink); }
+      .type-row .poltawski { font-family: "Poltawski Nowy", Georgia, serif; font-size: 26px; font-weight: 700; color: var(--ink); }
+
+      .style-card p { margin-top: 18px; font-size: 15px; color: var(--muted); }
+
+      /* ---------- Final screens ---------- */
+      .screens { background: var(--green); color: #fff; }
+      .screens h2 { color: #fff; }
+      .screens .eyebrow { color: var(--green-40); }
+      .screens .lead { color: rgb(255 255 255 / 80%); }
+      .screens .figure-card { border: 0; background: #fff; box-shadow: 0 30px 80px rgb(0 0 0 / 25%); }
+      .screens .figure-card + .figure-card { margin-top: 28px; }
+
+      .screen-list {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin: 40px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .screen-list li {
+        padding: 18px 20px;
+        border-radius: 18px;
+        background: rgb(255 255 255 / 10%);
+        font-size: 15px;
+      }
+
+      .screen-list strong { display: block; font-size: 16px; color: #fff; }
+      .screen-list span { color: rgb(255 255 255 / 75%); }
+
+      /* ---------- Footer ---------- */
+      footer {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(80px, 10vw, 120px) var(--pad);
+        text-align: center;
+      }
+
+      footer .ring { width: 520px; height: 520px; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+      footer .wrap { z-index: 1; }
+
+      footer h2 {
+        font-family: "Poltawski Nowy", Georgia, serif;
+        font-size: clamp(44px, 6vw, 72px);
+        font-weight: 700;
+        color: var(--green);
+      }
+
+      footer p { margin-top: 12px; color: var(--muted); }
+
+      /* ---------- Lightbox ---------- */
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        display: none;
+        place-items: center;
+        padding: 20px;
+        background: rgb(8 30 16 / 92%);
+        cursor: zoom-out;
+      }
+
+      .lightbox.open { display: grid; }
+      .lightbox img { max-width: 100%; max-height: 94vh; border-radius: 16px; }
+
+      /* ---------- Reveal ---------- */
+      .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+      .reveal.visible { opacity: 1; transform: none; }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .reveal { opacity: 1; transform: none; transition: none; }
+      }
+
+      /* ---------- Responsive ---------- */
+      @media (max-width: 980px) {
+        nav { display: none; }
+        .hero-grid, .problem-grid { grid-template-columns: 1fr; }
+        .quote { position: static; }
+        .feature-grid, .style-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .screen-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+
+      @media (max-width: 640px) {
+        body { font-size: 16px; }
+        .persona-grid, .feature-grid, .style-grid { grid-template-columns: 1fr; }
+        .stat { grid-template-columns: 1fr; gap: 10px; }
+        .screen-list { grid-template-columns: 1fr; }
+        .swatch i { width: 60px; height: 60px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="#top">AnnSetu</a>
+        <nav aria-label="Page sections">
+          <a href="#problem">Problem</a>
+          <a href="#process">Process</a>
+          <a href="#personas">Users</a>
+          <a href="#features">Features</a>
+          <a href="#design">Design</a>
+          <a href="#screens">Screens</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- ================= HERO ================= -->
+      <section class="hero">
+        <span class="ring r1"></span>
+        <span class="ring r2"></span>
+        <div class="wrap hero-grid reveal">
+          <div>
+            <h1>Ann Setu</h1>
+            <span class="tagline">Food Bridge</span>
+            <p class="lead">
+              The app creates a seamless bridge between food providers (event caterers,
+              restaurants) and food distributors (NGOs, volunteers) to ensure surplus food
+              reaches the needy instead of being wasted.
+            </p>
+            <div class="meta">
+              <span>Self Project</span>
+              <span>1 Month</span>
+              <span>UI/UX · Mobile App</span>
+            </div>
+          </div>
+          <figure class="hero-visual" style="margin: 0">
+            <img src="images/hero-screens.jpg" alt="Ann Setu app screens: welcome screen, login and side menu" />
+          </figure>
+        </div>
+      </section>
+
+      <!-- ================= PROBLEM ================= -->
+      <section class="problem" id="problem">
+        <div class="wrap reveal">
+          <span class="eyebrow">Problem statement</span>
+          <h2>Food goes to waste while people go hungry.</h2>
+
+          <div class="problem-grid">
+            <blockquote class="quote" style="margin: 0">
+              A significant amount of food from weddings and large events goes to waste, while
+              many people struggle with hunger. There is a need for a streamlined, reliable
+              system that connects event caterers with NGOs to efficiently donate and distribute
+              surplus food to those in need.
+            </blockquote>
+
+            <div class="stats">
+              <div class="stat">
+                <div>
+                  <strong>30%</strong>
+                  <small>Food wastage in weddings</small>
+                  <div class="bar"><i></i></div>
+                </div>
+                <p>
+                  Food wastage is a significant issue at weddings, when food served goes uneaten,
+                  often due to over-preparation, buffet culture, social pressure, fear of scarcity,
+                  and lack of planning.
+                </p>
+              </div>
+              <div class="stat">
+                <div>
+                  <strong>27.3</strong>
+                  <small>Global Hunger Index score</small>
+                </div>
+                <p>
+                  India ranks 105th out of 127 countries with sufficient data to calculate GHI
+                  scores, with a score of 27.3, indicating a "serious" level of hunger.
+                </p>
+              </div>
+              <div class="stat">
+                <div>
+                  <strong>224M</strong>
+                  <small>Undernourished people in India</small>
+                </div>
+                <p>
+                  According to the United Nations Food and Agriculture Organization, there were
+                  approximately 224 million undernourished people living throughout India as of 2021.
+                </p>
+              </div>
+              <div class="solution-box">
+                <h3>Solution</h3>
+                <p>
+                  AnnSetu app: real-time food donation requests, smart matching algorithm,
+                  volunteer network, food safety compliance, recognition &amp; incentives.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROCESS ================= -->
+      <section id="process">
+        <div class="wrap reveal">
+          <span class="eyebrow">Process</span>
+          <h2>From problem to prototype.</h2>
+          <p class="lead">
+            Problem statement → validation → primary validation → research &amp; stats → user
+            research → user persona → ideation → app flow → wireframe &amp; prototype.
+          </p>
+          <figure class="figure-card zoom">
+            <img src="images/process.jpg" alt="Process timeline: problem statement, validation, primary validation, research and stats, user research, user persona, ideation, app flow, wireframe and prototype" loading="lazy" />
+          </figure>
+        </div>
+      </section>
+
+      <!-- ================= PERSONAS ================= -->
+      <section class="personas" id="personas">
+        <div class="wrap reveal">
+          <span class="eyebrow">User persona</span>
+          <h2>Two sides of the bridge.</h2>
+          <div class="persona-grid">
+            <article class="persona">
+              <div class="persona-head">
+                <div class="avatar" aria-hidden="true">RM</div>
+                <div>
+                  <h3>Ravi Mehta, <span>43 y.o</span></h3>
+                  <em>Owner of Mehta Caterer · Food donor</em>
+                </div>
+              </div>
+              <span class="tag">Goals</span>
+              <ul>
+                <li>Reduce food waste while ensuring sufficient supply.</li>
+                <li>Maintain consistent taste &amp; hygiene standards.</li>
+              </ul>
+              <span class="tag">Pain points</span>
+              <ul>
+                <li>Less shelf-life food has to be consumed in 2–3 days.</li>
+                <li>No consistent place for donating the food.</li>
+                <li>Proof of distribution amongst the needy, if food is donated.</li>
+              </ul>
+            </article>
+            <article class="persona">
+              <div class="persona-head">
+                <div class="avatar" aria-hidden="true">AS</div>
+                <div>
+                  <h3>Anita Sharma, <span>35 y.o</span></h3>
+                  <em>Volunteer at an NGO · Food distributor</em>
+                </div>
+              </div>
+              <span class="tag">Goals</span>
+              <ul>
+                <li>Find consistent food donors to serve more needy people.</li>
+                <li>Ensure timely pickup &amp; delivery to prevent food spoilage.</li>
+              </ul>
+              <span class="tag">Pain points</span>
+              <ul>
+                <li>Food quality and hygiene.</li>
+                <li>No easy way to find food donations.</li>
+                <li>Struggles with transportation.</li>
+                <li>Uncertainty about the food quantity.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FEATURES ================= -->
+      <section id="features">
+        <div class="wrap reveal">
+          <span class="eyebrow">Features &amp; specifications</span>
+          <h2>What the app does.</h2>
+          <div class="feature-grid">
+            <article class="feature">
+              <span class="num">01</span>
+              <h3>User Registration</h3>
+              <ul>
+                <li>Role-based sign-up (Caterer/Restaurant, NGO, Volunteer)</li>
+                <li>Business verification for food providers</li>
+                <li>NGO verification to ensure legitimacy</li>
+                <li>Profile management (edit info, donation history, ratings)</li>
+              </ul>
+            </article>
+            <article class="feature highlight">
+              <span class="num">02</span>
+              <h3>Food Donation &amp; Requests</h3>
+              <ul>
+                <li>Food providers can list available food with details:
+                  <ul>
+                    <li>Type of food, quantity</li>
+                    <li>Expiry time, storage requirements</li>
+                  </ul>
+                </li>
+                <li>NGOs can browse &amp; request donations</li>
+                <li>AI-powered matching: auto-connects NGOs with nearby food providers</li>
+                <li>Scheduled &amp; instant donations based on need</li>
+              </ul>
+            </article>
+            <article class="feature">
+              <span class="num">03</span>
+              <h3>Food Safety &amp; Quality Control</h3>
+              <ul>
+                <li>Automated food safety checklist before listing</li>
+                <li>NGO approval system: accept/reject food based on quality</li>
+                <li>Food condition ratings &amp; feedback for transparency</li>
+              </ul>
+            </article>
+            <article class="feature">
+              <span class="num">04</span>
+              <h3>Location &amp; Delivery</h3>
+              <ul>
+                <li>Volunteer matching system: assign nearest available volunteer</li>
+                <li>Real-time tracking: NGOs &amp; donors track pickup &amp; delivery</li>
+                <li>Live notifications &amp; alerts for all users</li>
+                <li>Delivery &amp; pick-up mode</li>
+              </ul>
+            </article>
+            <article class="feature">
+              <span class="num">05</span>
+              <h3>AI-Powered Smart Insights</h3>
+              <ul>
+                <li>Predictive analytics: suggest donation frequency based on past behaviour</li>
+              </ul>
+            </article>
+            <article class="feature">
+              <span class="num">06</span>
+              <h3>Recognition</h3>
+              <ul>
+                <li>Badges &amp; rewards for top donors &amp; volunteers</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FLOW + WIREFRAME ================= -->
+      <section class="personas" id="design">
+        <div class="wrap reveal">
+          <span class="eyebrow">User flow &amp; wireframe</span>
+          <h2>Two kinds of users, one simple flow.</h2>
+          <p class="lead">
+            Food donors and food distributors share one journey: onboarding → login or sign up
+            (personal details, organisation verification) → schedule or request a food donation →
+            match meals → track the meal → upload proof → feedback &amp; rating.
+          </p>
+          <figure class="figure-card zoom" style="background: #fff">
+            <img src="images/flow.jpg" alt="User flow diagram next to hand-drawn paper wireframes of the app screens" loading="lazy" />
+          </figure>
+        </div>
+      </section>
+
+      <!-- ================= STYLE GUIDE ================= -->
+      <section>
+        <div class="wrap reveal">
+          <span class="eyebrow">Visual design</span>
+          <h2>Style guide.</h2>
+          <div class="style-grid">
+            <div class="style-card">
+              <h3>Primary colour</h3>
+              <div class="swatches">
+                <div class="swatch"><i style="background: #006623"></i>#006623</div>
+                <div class="swatch"><i style="background: #99e8b4"></i>#01C544 · 40%</div>
+                <div class="swatch"><i style="background: #adadaf"></i>#ADADAF</div>
+              </div>
+            </div>
+            <div class="style-card">
+              <h3>Typography</h3>
+              <div class="type-row"><small>Primary</small><span class="poppins">Poppins</span></div>
+              <div class="type-row"><small>Secondary</small><span class="poltawski">Poltawski Nowy</span></div>
+            </div>
+            <div class="style-card">
+              <h3>Icon set &amp; components</h3>
+              <p>
+                A consistent line-and-fill icon set (profile, meals, location, delivery, camera,
+                ratings, history) with rounded cards and pill-shaped buttons throughout.
+              </p>
+            </div>
+          </div>
+          <figure class="figure-card zoom">
+            <img src="images/styleguide.jpg" alt="Style guide: colour palette, typography, icon set, and login, welcome, menu and search screens" loading="lazy" />
+          </figure>
+        </div>
+      </section>
+
+      <!-- ================= FINAL SCREENS ================= -->
+      <section class="screens" id="screens">
+        <div class="wrap reveal">
+          <span class="eyebrow">Prototype</span>
+          <h2>Final screens.</h2>
+          <p class="lead">Click any image to see it full size.</p>
+
+          <ul class="screen-list">
+            <li><strong>Sign-up</strong><span>Role selection and organisation verification</span></li>
+            <li><strong>Schedule</strong><span>Date, time, quantity and delivery or pick-up</span></li>
+            <li><strong>Meal Hero</strong><span>Browse NGOs with date and quantity</span></li>
+            <li><strong>Distributions</strong><span>Photo proof, ratings and people served</span></li>
+          </ul>
+
+          <figure class="figure-card zoom" style="margin-top: 40px">
+            <img src="images/screens.jpg" alt="Final screens: schedule a donation, sign-up, NGO list, confirmation, distribution photos and distributions summary" loading="lazy" />
+          </figure>
+          <figure class="figure-card zoom">
+            <img src="images/profile.jpg" alt="Final screens: caterer details, donor profile with previous donations, my profile, and impact summary showing food reached 58 people" loading="lazy" />
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span class="ring"></span>
+      <div class="wrap reveal">
+        <h2>Thank You</h2>
+        <p>Ann Setu · Designed by Preksha Anand</p>
+      </div>
+    </footer>
+
+    <div class="lightbox" role="dialog" aria-label="Enlarged image" tabindex="-1">
+      <img alt="" />
+    </div>
+
+    <script>
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("visible")),
+        { threshold: 0.08 }
+      );
+      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+      const box = document.querySelector(".lightbox");
+      const boxImg = box.querySelector("img");
+      document.querySelectorAll(".zoom").forEach((fig) => {
+        fig.addEventListener("click", () => {
+          const img = fig.querySelector("img");
+          boxImg.src = img.src;
+          boxImg.alt = img.alt;
+          box.classList.add("open");
+          box.focus();
+        });
+      });
+      const close = () => box.classList.remove("open");
+      box.addEventListener("click", close);
+      document.addEventListener("keydown", (e) => e.key === "Escape" && close());
+    </script>
+  </body>
+</html>
