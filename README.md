@@ -4,7 +4,7 @@
 
 **Self Project · 1 Month · UI/UX Design**
 
-🌐 **[View the case study website](https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/)**
+🌐 **[View the case study website](https://preksha-05.github.io/Ann-Setu/)**
 
 ![Ann Setu app screens](images/hero-screens.jpg)
 
